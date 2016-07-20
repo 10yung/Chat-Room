@@ -1,0 +1,129 @@
+/* custom scoll bar  */
+::-webkit-scrollbar {
+    width: 12px;
+}
+::-webkit-scrollbar-track {
+    background-color: #ededed;
+    border-radius: 9px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #d4d4d4;
+    border-radius: 9px;
+}
+
+/* custom materialize style */
+input[type=text].validate+label {
+    width: auto;
+}
+.container .row {
+     margin-left: 0rem;
+     margin-right: 0rem;
+}
+.chat-room {
+    margin-top: 25px;
+    padding: -15px -15px 0px -15px;
+}
+.site-title {
+    background-color: #ececec;
+    margin: 0px -10.5px 0px -10.5px;
+    padding: 10px;
+}
+
+.ctm-link {
+    color: #fff;
+}
+.ctm-link:hover {
+    color: #f4645f;
+    transition: color 0.8s;
+}
+
+#messages > .row {
+    margin-bottom: 0px;
+}
+
+.message-section {
+    padding: 0px 20px;
+}
+
+#messages{
+    height: calc(100vh - 200px);
+    overflow: auto;
+    margin-bottom: 50px;
+    overflow-x: hidden;
+}
+
+.user-join-leave{
+    color: #999;
+    font-style: italic
+}
+
+.msg-card {
+    display: inline-block;
+    margin: 10px;
+    max-width: 60%;
+    border-radius: 30px;
+    padding: 15px;
+    -ms-word-break: break-all;
+    word-break: break-all;
+
+    /* force loooong text to break */
+    /* Non standard for webkit */
+     word-break: break-word;
+
+    -webkit-hyphens: auto;
+       -moz-hyphens: auto;
+        -ms-hyphens: auto;
+            hyphens: auto;
+
+}
+
+
+.own-send-msg {
+    float: right;
+    margin-right: 10px;
+}
+
+.other-send-msg-icon {
+    vertical-align: top;
+    margin-top: 10px;
+}
+
+.ctm-btn {
+    height: 50px;
+    margin-top: 10px;
+    float: right;
+    width: 100%;
+}
+
+.usersection {
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+    margin-bottom: 20px;
+}
+
+.alluser {
+    max-height: calc(100vh - 270px);
+    overflow: auto;
+    overflow-x: hidden;
+    padding-left: 5px;
+    padding-right: 8px;
+    margin-left: 5px;
+    -ms-word-break: break-all;
+    word-break: break-all;
+
+    /* force loooong text to break */
+    /* Non standard for webkit */
+     word-break: break-word;
+
+    -webkit-hyphens: auto;
+       -moz-hyphens: auto;
+        -ms-hyphens: auto;
+            hyphens: auto;
+}
+
+.listuser {
+    font-size: 25px;
+    padding-left: 5px;
+    vertical-align: middle;
+    color: #5a5a5a;
+    font-family: 'Raleway', sans-serif;
+}

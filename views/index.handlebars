@@ -1,0 +1,205 @@
+<div class="row chat-room">
+    <div class="col s12 m4 l3 usersection" style="padding-bottom: 10px;">
+        <div class="site-title">
+            <h3 class="center-align flow-text" style="margin-bottom:3px;">CHAT ROOM</h3>
+            <p class="center-align" style="margin-top:0px;">
+                <span style="color:#fff">by</span> <a href="http://andyno10.github.io/" class="ctm-link">andyNo.10</a>
+            </p>
+        </div>
+
+        <h5 class="center-align flow-text">
+            CURRENT USER
+        </h5>
+        <div id="all-user" class="alluser">
+
+        </div>
+    </div>
+    <div class="col s12 m8 l9 " style="padding: 0 20px;">
+        <div id="messages">
+
+        </div>
+
+
+        <div class="input-form">
+            <form>
+                <div class="row">
+                    <div class="input-field col s12 m8 l9">
+                        <i class="material-icons prefix">mode_edit</i>
+                        <input id="input-message" type="text" class="validate"></input>
+                        <label for="icon_prefix2">Message</label>
+                    </div>
+
+                    <div class="col s12 m4 l3">
+                        <button class="btn waves-effect waves-light ctm-btn" type="submit" id="submit">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+
+    $( document ).ready(function() {
+        swal({
+            title: "Choose your Nickname !",
+            type: "input",
+            showCancelButton: false,
+            closeOnConfirm: false,
+            animation: "slide-from-top",
+            inputPlaceholder: "your nickname"
+        },
+        function(inputValue){
+            if (inputValue === false) {
+                return false;
+            }
+
+            if (inputValue === "") {
+                swal.showInputError("You need to write something!");
+                return false
+            }
+
+            swal(inputValue, "Weclome to andyNo.10 Chat Room !", "success");
+
+            // start socket.io
+            openSocket(inputValue);
+
+        });
+
+    });
+
+function openSocket(userName) {
+
+    // user list
+    var userList =[];
+
+    var userinfo = {};
+
+    // open socket
+    var socket = io();
+
+    // show user login message
+    socket.emit("join", userName);
+
+    socket.on('join',function(data){
+        $('#messages').append($('<p class="user-join-leave" >').text( data.userName + " join").hide().fadeIn(300));
+        scrollToBottom();
+    });
+
+    // disconnect user
+    socket.on('disconnect',function(data){
+        $('#messages').append($('<p class="user-join-leave" >>').text( data + " leave this chatroom").hide().fadeIn(300));
+        scrollToBottom();
+    });
+
+    // update all user list
+    socket.on('update', function (users){
+
+        userList = users;
+
+        $('#all-user').empty();
+
+        for(var i=0; i<userList.length; i++) {
+            var listsource = $('#handlebars-userlist-item').html();
+            var UserListtemplate = Handlebars.compile(listsource);
+            userinfo = {
+                'name': userList[i].userName,
+                'firstchar': userList[i].userFirstChar,
+                'usercolor': userList[i]. userColor
+            };
+            var theCompiledList = UserListtemplate(userinfo);
+
+            $('#all-user').append($(theCompiledList).hide().fadeIn(600));
+
+        }
+    });
+
+
+    // chat message socket
+    $('form').submit(function(){
+        if ($('#input-message').val() != '') {
+
+            // own send message handlebar render
+            var source = $('#handlebars-own-send-msg').html();
+            var template = Handlebars.compile(source);
+            var context = { 'text' : $('#input-message').val()};
+            var theCompiledHtml = template(context);
+
+            $('#messages').append($(theCompiledHtml).hide().fadeIn(1000));
+            scrollToBottom();
+
+            // broadcast to another user
+            socket.emit('chat message',{
+                    userinfo: userinfo,
+                    inputval: $('#input-message').val()
+            });
+
+            $('#input-message').val('');
+        }
+
+        return false;
+    });
+
+    /* {
+            userinfo: {
+                            userName: name,
+                            userFirstChar: firstcha,
+                            userColor: userColor
+                        },
+            inputval: $('#input-message').val()
+        }
+    */
+    socket.on('chat message', function(msg){
+        var sendsource = $('#handlebars-other-send-msg').html();
+        var sendtemplate = Handlebars.compile(sendsource);
+        var sendcontext = {
+            'firstchar': msg.userinfo.firstchar,
+            'usercolor': msg.userinfo.usercolor,
+            'text': msg.inputval
+        };
+        var theCompiledsend = sendtemplate(sendcontext);
+
+        $('#messages').append($(theCompiledsend).hide().fadeIn(1000));
+        scrollToBottom();
+    });
+
+}
+
+function scrollToBottom () {
+    $('#messages').animate({scrollTop: $('#messages').get(0).scrollHeight}, 800);
+}
+
+
+</script>
+
+<!-- handlebar template area -->
+<script id="handlebars-own-send-msg" type="text/x-handlebars-template">
+    <div class="row">
+            <span class="btn-floating btn-large waves-effect waves-light other-send-msg-icon own-send-msg" style="background-color: #607D8B">Me</span>
+           <div class="card-panel msg-card own-send-msg">
+                \{{ text }}
+           </div>
+
+   </div>
+</script>
+
+<script id="handlebars-other-send-msg" type="text/x-handlebars-template">
+    <div class="row">
+        <span class="btn-floating btn-large waves-effect waves-light other-send-msg-icon" style="background-color: \{{ usercolor }}">\{{ firstchar }}</span>
+        <span class="card-panel msg-card other-send-msg">
+                \{{ text }}
+        </span>
+   </div>
+</script>
+
+<script id="handlebars-userlist-item" type="text/x-handlebars-template">
+    <div class="row" >
+         <span class="btn-floating btn-large waves-effect waves-light" style="background-color: \{{ usercolor }}">\{{ firstchar }}</span>
+         <span class="listuser">\{{ name }}</span>
+   </div>
+</script>
