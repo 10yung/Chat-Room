@@ -133,6 +133,8 @@ function openSocket(userName) {
             $('#messages').append($(theCompiledHtml).hide().fadeIn(1000));
             scrollToBottom();
 
+            console.log(userinfo);
+
             // broadcast to another user
             socket.emit('chat message',{
                     userinfo: userinfo,
