@@ -47,7 +47,7 @@ io.on('connection', function(socket){
 
         users.push(userinfo);
 
-        io.emit('join', socket.username );
+        socket.broadcast.emit('join', socket.username );
         socket.emit('setUserInfo', userinfo);
 
         // update user list
