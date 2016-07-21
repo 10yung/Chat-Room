@@ -1,4 +1,4 @@
-# Node.js Chat Room - [Demo_Site](pacific-thicket-54736.herokuapp.com)
+# Node.js Chat Room - [Demo_Site](http://pacific-thicket-54736.herokuapp.com/)
 
 ###### Chat Room built by Node Express, Socket.io, Materialize and deploy on heroku.
 ------
@@ -21,4 +21,4 @@ In this app, I've learned how to use [socket.io](http://socket.io/) and design f
 
 ## Summary
 
-I've confronted some challenges about design whole app by javascript. Sometime it really mess me up and forget which part is for Frontend and which is for Backend. I think I need more experience about javascript design pattern. 
+I've confronted some challenges about design whole app by javascript. Sometime it really mess me up and forget which part is for Frontend and which is for Backend. I think I need more experience about javascript design pattern.
