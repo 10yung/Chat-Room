@@ -78,6 +78,10 @@ function openSocket(userName) {
     // user list
     var userList =[];
 
+    // all users info
+    var usersinfo = {};
+
+    // per user info
     var userinfo = {};
 
     // open socket
@@ -87,8 +91,12 @@ function openSocket(userName) {
     socket.emit("join", userName);
 
     socket.on('join',function(data){
-        $('#messages').append($('<p class="user-join-leave" >').text( data.userName + " join").hide().fadeIn(300));
+        $('#messages').append($('<p class="user-join-leave" >').text( data + " join").hide().fadeIn(300));
         scrollToBottom();
+    });
+
+    socket.on('setUserInfo',function(data){
+        userinfo = data;
     });
 
     // disconnect user
@@ -107,12 +115,12 @@ function openSocket(userName) {
         for(var i=0; i<userList.length; i++) {
             var listsource = $('#handlebars-userlist-item').html();
             var UserListtemplate = Handlebars.compile(listsource);
-            userinfo = {
+            usersinfo = {
                 'name': userList[i].userName,
                 'firstchar': userList[i].userFirstChar,
                 'usercolor': userList[i]. userColor
             };
-            var theCompiledList = UserListtemplate(userinfo);
+            var theCompiledList = UserListtemplate(usersinfo);
 
             $('#all-user').append($(theCompiledList).hide().fadeIn(600));
 
@@ -121,7 +129,7 @@ function openSocket(userName) {
 
 
     // chat message socket
-    $('form').submit(function(){
+    $('form').submit(function(userName){
         if ($('#input-message').val() != '') {
 
             // own send message handlebar render
@@ -157,11 +165,13 @@ function openSocket(userName) {
         }
     */
     socket.on('chat message', function(msg){
+
+        console.log(msg);
         var sendsource = $('#handlebars-other-send-msg').html();
         var sendtemplate = Handlebars.compile(sendsource);
         var sendcontext = {
-            'firstchar': msg.userinfo.firstchar,
-            'usercolor': msg.userinfo.usercolor,
+            'firstchar': msg.userinfo.userFirstChar,
+            'usercolor': msg.userinfo.userColor,
             'text': msg.inputval
         };
         var theCompiledsend = sendtemplate(sendcontext);
@@ -175,7 +185,6 @@ function openSocket(userName) {
 function scrollToBottom () {
     $('#messages').animate({scrollTop: $('#messages').get(0).scrollHeight}, 800);
 }
-
 
 </script>
 

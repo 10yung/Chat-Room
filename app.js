@@ -34,12 +34,6 @@ var users = [];
 // socket.io function
 io.on('connection', function(socket){
 
-
-    // listen on 'chat message' events, emit to all user except sender
-    socket.on('chat message', function(msg){
-        socket.broadcast.emit('chat message', msg);
-    });
-
     // listen on 'new user added' events
     socket.on('join',function(name){
         socket.username = name;
@@ -53,7 +47,8 @@ io.on('connection', function(socket){
 
         users.push(userinfo);
 
-        io.emit('join', userinfo );
+        io.emit('join', socket.username );
+        socket.emit('setUserInfo', userinfo);
 
         // update user list
         updateClients();
@@ -73,6 +68,12 @@ io.on('connection', function(socket){
         console.log( socket.username + ' - disconnected');
         io.emit('disconnect', socket.username);
         updateClients();
+    });
+
+
+    // listen on 'chat message' events, emit to all user except sender
+    socket.on('chat message', function(msg){
+        socket.broadcast.emit('chat message', msg);
     });
 
 });
