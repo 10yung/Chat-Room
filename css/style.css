@@ -127,3 +127,47 @@ input[type=text].validate+label {
     color: #5a5a5a;
     font-family: 'Raleway', sans-serif;
 }
+
+.showuserinfo {
+    margin-top: -25px;
+    height: 40px;
+    width: 40px;
+}
+
+@media screen and (min-width: 600px) {
+    .showuserinfo {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .chat-room {
+        margin-top: 15px;
+    }
+
+    .onlineuser {
+        display: none;
+        box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+        padding: 10px;
+        margin-top: -25px;
+        margin-left: -10px;
+        margin-right: -10px;
+    }
+
+    .usersection{
+        box-shadow: none;
+        margin-bottom: 5px;
+    }
+
+    .row  {
+        margin-bottom: 10px;
+    }
+
+    .site-title {
+        box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+    }
+
+    #messages {
+        height: calc(100vh - 350px);
+    }
+}

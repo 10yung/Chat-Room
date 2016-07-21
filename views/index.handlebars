@@ -1,17 +1,19 @@
 <div class="row chat-room">
-    <div class="col s12 m4 l3 usersection" style="padding-bottom: 10px;">
+    <div class="col s12 m4 l3 usersection right-align">
         <div class="site-title">
             <h3 class="center-align flow-text" style="margin-bottom:3px;">CHAT ROOM</h3>
             <p class="center-align" style="margin-top:0px;">
                 <span style="color:#fff">by</span> <a href="http://andyno10.github.io/" class="ctm-link">andyNo.10</a>
             </p>
         </div>
+        <a class="btn-floating btn-large waves-effect waves-light teal showuserinfo"><i class="material-icons">perm_identity</i></a>
+        <div class="onlineuser">
+            <h5 class="center-align flow-text">
+                CURRENT USER
+            </h5>
+            <div id="all-user" class="left-align alluser">
 
-        <h5 class="center-align flow-text">
-            CURRENT USER
-        </h5>
-        <div id="all-user" class="alluser">
-
+            </div>
         </div>
     </div>
     <div class="col s12 m8 l9 " style="padding: 0 20px;">
@@ -69,6 +71,10 @@
             // start socket.io
             openSocket(inputValue);
 
+        });
+
+        $('.showuserinfo').click(function () {
+            $( '.onlineuser' ).fadeToggle();
         });
 
     });
@@ -140,8 +146,6 @@ function openSocket(userName) {
 
             $('#messages').append($(theCompiledHtml).hide().fadeIn(1000));
             scrollToBottom();
-
-            console.log(userinfo);
 
             // broadcast to another user
             socket.emit('chat message',{
